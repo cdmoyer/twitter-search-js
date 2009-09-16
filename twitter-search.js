@@ -4,12 +4,16 @@
  *
  * TODO: use regex instead of loops.
  * Usage: twitterSearch.filter(tweet, searchString) - returns true/false
+ * Usage: var filterFunc = makeSearchFilter(functionToExtractTextFromArrayElements)
  */
 
-var twitterSearch = (function () {
+var makeSearchFilter = function (getText) { 
+ if (!getText) {
+   getText = function (s) { return s; }
+ }
  return {
    filter : function (tweet, search, includeHighlighted) {
-     var i = 0, s = '', text = tweet.text.toLowerCase();
+     var i = 0, s = '', text = getText(tweet).toLowerCase();
 
      if (typeof search == "string") {
        search = this.formatSearch(search);
@@ -95,21 +99,23 @@ var twitterSearch = (function () {
    },
 
    // tweets typeof Array
-   filterTweets : function (tweets, search, includeHighlighted) {
+   filterArray : function (tweets, search, includeHighlighted) {
      var updated = [], tmp, i = 0;
 
      if (search instanceof String) {
        search = this.formatSearch(search);
      }
 
-     for (i = 0; i < tweet.length; i++) {
-       tmp = filter(tweet[i], search, includeHighlighted);
+     for (i = 0; i < tweets.length; i++) {
+       tmp = this.filter(tweets[i], search, includeHighlighted);
        if (tmp) {
-         updated.push(tmp);
+         updated.push(tweets[i]);
        }
      }
 
      return updated;
    }
  };
-})();
+}
+
+var twitterSearch = makeSearchFilter(function (tweet) { return tweet.text; });
