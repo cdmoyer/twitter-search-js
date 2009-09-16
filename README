@@ -1,0 +1,30 @@
+Generic array filtering, and twitter specific search filtering functions.
+
+Example:
+var tweets = [
+	{text: 'fooby blech'},
+	{text: 'arrgghy goodness'}
+];
+
+print("Orig----");
+for (i in tweets) print(tweets[i].text);
+
+print("");
+var searches = ["e", "e -good"];
+
+for (s in searches) {
+	print("Searching: " + searches[s] + "   ------");
+	results = twitterSearch.filterArray(tweets, searches[s]);
+	for (i in results) {
+		print(results[i].text);
+	}
+	print("");
+}
+
+var arraySearchFilter = makeSearchFilter();
+var animals = ["dog","cat","fishy fish"];
+var results = arraySearchFilter.filterArray(ar, '"y fish"')
+for (i in results) {
+	print(results[i]);
+}
+
